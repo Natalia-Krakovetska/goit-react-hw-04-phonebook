@@ -3,12 +3,16 @@ import { nanoid } from 'nanoid';
 import { FormContacts } from './FormContacts/FormContacts';
 import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
+
+const getInitialContact = () => {
+  const savedContacts = JSON.parse(localStorage.getItem('contacts'));
+  if (savedContacts !== null) {
+    return savedContacts;
+  }
+  return [];
+};
 export const App =()=> {
-  const [contacts, setContacts] = useState(() => {
-    const contacts = localStorage.getItem('contacts');
-    const parcedContacts = JSON.parse(contacts);
-    if (parcedContacts){
-      setContacts(parcedContacts)}});
+  const [contacts, setContacts] = useState(getInitialContact);
   const [filter, setFilter] = useState("");
     
  
@@ -47,9 +51,9 @@ const getFilteredContacts = () => {
 };
 
 const deleteContact = contactId => {
-  setContacts(prevstate => ({
-    contacts: prevstate.contacts.filter(contact => contact.id !== contactId),
-  }));
+  setContacts(prevContacts => 
+    prevContacts.filter(contact => contact.id !== contactId),
+  );
 };
 const filteredContacts = getFilteredContacts();
 
